@@ -1,15 +1,23 @@
 @import "setup";
 @import "variables";
 @import "header";
+@import "display";
 * {
   margin: 0;
   padding: 0;
 }
 body {
   font-size: 125%;
+  background-color: $light-grey;
+}
+.App {
+  display: flex;
 }
 .wrapper {
   max-width: 1440px;
-  width: 90%;
+  width: 80%;
   margin: 0 auto;
+}
+img {
+  width: 100%;
 }

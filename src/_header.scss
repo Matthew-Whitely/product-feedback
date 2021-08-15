@@ -1,15 +1,91 @@
+header {
+  width: 35%;
+}
 .headingText {
-  width: 300px;
+  width: 100%;
   height: 200px;
   background: url(./assets/suggestions/desktop/background-header.png);
   background-repeat: no-repeat;
   background-size: cover;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  padding: 10px;
-  margin-top: 40px;
-  // text-align: center;
+  @include border-radius;
+  padding: 30px;
+  margin: 40px 0;
   padding-top: 80px;
+  p {
+    @include body1;
+    color: $white;
+  }
+}
+.buttonHeader {
+  width: 100%;
+  height: 220px;
+  background-color: white;
+  padding: 20px 10px;
+  margin-bottom: 40px;
+  @include border-radius;
+  button {
+    margin: 10px 10px;
+    padding: 7px 15px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: $lightest-grey;
+    color: $blue;
+    @include body3;
+    border: none;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: $blue;
+    color: $white;
+  }
+}
+.listHeader {
+  width: 100%;
+  height: 220px;
+  background-color: white;
+  padding: 20px 10px;
+  @include border-radius;
+  div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 0 10px;
+    a {
+      color: $blue;
+      @include body1;
+    }
+  }
+  div:nth-child(2),
+  div:nth-child(3),
+  div:nth-child(4) {
+    color: $lighter-blue;
+  }
+  div:nth-child(2) p:nth-child(1)::before {
+    content: "\2022";
+    color: $orange;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    font-size: 2rem;
+  }
+  div:nth-child(3) p:nth-child(1)::before {
+    content: "\2022";
+    color: $purple;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    font-size: 2rem;
+  }
+  div:nth-child(4) p:nth-child(1)::before {
+    content: "\2022";
+    color: $light-blue;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    font-size: 2rem;
+    margin-right: 5px;
+  }
 }

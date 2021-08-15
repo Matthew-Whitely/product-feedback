@@ -1,37 +1,39 @@
 const TopLayer = (props) => {
   return (
-    <header className="wrapper">
+    <header>
       <div className="headingText ">
         <h1>Frontend Mentor</h1>
         <p>Feedback Board</p>
       </div>
-      <div>
-        <button>All</button>
-        <button>UI</button>
-        <button>UX</button>
-        <button>Enhancement</button>
-        <button>Bug</button>
+      <div className="buttonHeader">
+        <div>
+          <button>All</button>
+          <button>UI</button>
+          <button>UX</button>
+        </div>
+        <div>
+          <button>Enhancement</button>
+          <button>Bug</button>
+        </div>
         <button>Feature</button>
       </div>
-      <div>
+      <div className="listHeader">
         <div>
           <h2>Roadmap</h2>
-          <a>View</a>
+          <a href="">View</a>
         </div>
-        <ul>
-          <li>
-            <p>Planned</p>
-            <p>2</p>
-          </li>
-          <li>
-            <p>In-Progress </p>
-            <p>3</p>
-          </li>
-          <li>
-            <p>Live</p>
-            <p>1</p>
-          </li>
-        </ul>
+        <div>
+          <p> Planned</p>
+          <p>2</p>
+        </div>
+        <div>
+          <p> In-Progress</p>
+          <p>3</p>
+        </div>
+        <div>
+          <p>Live</p>
+          <p>1</p>
+        </div>
       </div>
     </header>
   );
