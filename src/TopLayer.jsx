@@ -7,15 +7,39 @@ const TopLayer = (props) => {
       </div>
       <div className="buttonHeader">
         <div>
-          <button>All</button>
+          <button
+            onClick={() => {
+              props.all();
+            }}
+          >
+            All
+          </button>
           <button>UI</button>
           <button>UX</button>
         </div>
         <div>
-          <button>Enhancement</button>
-          <button>Bug</button>
+          <button
+            onClick={() => {
+              props.buttonEnhancement();
+            }}
+          >
+            Enhancement
+          </button>
+          <button
+            onClick={() => {
+              props.bug();
+            }}
+          >
+            Bug
+          </button>
         </div>
-        <button>Feature</button>
+        <button
+          onClick={() => {
+            props.feature();
+          }}
+        >
+          Feature
+        </button>
       </div>
       <div className="listHeader">
         <div>

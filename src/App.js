@@ -8,28 +8,39 @@ import "./App.scss";
 function App() {
   // const [data, setData] = useState();
   const [productRequests, setProductRequests] = useState([]);
+
   useEffect(() => {
     axios
       .get("data.json")
       .then((res) => setProductRequests(res.data.productRequests))
       .catch((err) => console.log(err));
-    // fetch("data.json")
-    //   .then((res) => {
-    //     return res;
-    //   })
-    //   .then((res) => {
-    //     console.log(res.productRequests);
-    //     setProductRequests([res.productRequests]);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   }, []);
-  console.log(productRequests);
+
+  // const buttonEnhancement = () => {
+  //   const enhanceArr = [];
+
+  //   productRequests.forEach((data) => {
+  //     if (data?.category === "enhancement") {
+  //       enhanceArr.push(data);
+  //     }
+  //     setProductRequests(enhanceArr);
+  //   });
+  // };
+
+  // const buttonBug = () => {
+  //   const enhanceArr = [];
+
+  //   productRequests.forEach((data) => {
+  //     if (data?.category === "bug") {
+  //       enhanceArr.push(data);
+  //     }
+  //     setProductRequests(enhanceArr);
+  //   });
+  // };
+
   return (
     <div className="App wrapper">
-      <TopLayer />
-      <Display product={productRequests} />;
+      <Display product={productRequests} />
     </div>
   );
 }
