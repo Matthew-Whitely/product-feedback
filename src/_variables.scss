@@ -66,3 +66,10 @@ h4 {
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
+
+@mixin border-radius2 {
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+}

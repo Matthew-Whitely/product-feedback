@@ -2,8 +2,15 @@ import { useEffect, useState } from "react";
 import TopLayer from "./TopLayer";
 import Display from "./Display";
 import axios from "axios";
-
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  NavLink,
+  Switch,
+} from "react-router-dom";
 import "./App.scss";
+import Roadmap from "./Roadmap";
 
 function App() {
   // const [data, setData] = useState();
@@ -40,7 +47,20 @@ function App() {
 
   return (
     <div className="App wrapper">
-      <Display product={productRequests} />
+      <Router>
+        <Switch>
+          <Route
+            path="/"
+            exact
+            render={() => <Display product={productRequests} />}
+          />
+          <Route
+            exact
+            path="/roadmap"
+            render={() => <Roadmap product={productRequests} />}
+          />
+        </Switch>
+      </Router>
     </div>
   );
 }

@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
+
 import TopLayer from "./TopLayer";
+
 import comment from "./assets/shared/icon-comments.svg";
 import upArrow from "./assets/shared/icon-arrow-up.svg";
+
 const Display = ({ product }) => {
   const [ulti, setUlti] = useState(product);
 
@@ -96,7 +99,6 @@ const Display = ({ product }) => {
     } else if (e.target.value === "LeastUpvotes") {
       sortByLeastupvote();
     } else if (e.target.value === "MostComments") {
-      console.log("working");
       sortByMostComments();
     } else if (e.target.value === "LeastComments") {
       sortByLeastcomments();
@@ -207,18 +209,22 @@ const Display = ({ product }) => {
 
   return (
     <>
-      <header>
-        <TopLayer
-          buttonEnhancement={buttonEnhancement}
-          bug={buttonBug}
-          all={buttonAll}
-          feature={buttonFeature}
-        />
-      </header>
+      <TopLayer
+        buttonEnhancement={buttonEnhancement}
+        bug={buttonBug}
+        all={buttonAll}
+        feature={buttonFeature}
+        product={product}
+      />
+
       <main>
         <section className="mainDisplay">
           <div className="displayTopBanner">
-            <p>6 Suggestions</p>
+            <p>
+              {change
+                ? `${ulti.length} Suggestions`
+                : `${product.length} Suggestions`}
+            </p>
             <label htmlFor="sort">Sort By:</label>
             <select onChange={sortBy} name="sort" value={userSelect}>
               <option value="placeHolder" disabled>
@@ -245,7 +251,9 @@ const Display = ({ product }) => {
                       <button>{data.category}</button>
                     </div>
                     <div className="discussion">
-                      <img src={comment} alt="comment icon" />
+                      <div>
+                        <img src={comment} alt="comment icon" />
+                      </div>
                       {data.comments ? (
                         <p>{data.comments.length} </p>
                       ) : (
