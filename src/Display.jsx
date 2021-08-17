@@ -17,6 +17,8 @@ const Display = ({ product }) => {
   //buttons that display catgegorys
   const [change, setChange] = useState(false);
 
+  //comment length
+
   const buttonEnhancement = () => {
     const enhanceArr = [];
 
@@ -58,6 +60,36 @@ const Display = ({ product }) => {
   };
 
   //Figuring out how many comments and replies
+
+  const comments = () => {
+    const arr = [];
+    for (let i of product) {
+      console.log(i);
+    }
+
+    // product.forEach((data) => {
+    //   if (data?.comments) {
+    //     arr.push(data);
+    //   } else {
+    //   }
+    // });
+    // arr.forEach((data) => {
+    //   // console.log(data.comments.length);
+    //   if (data?.comments[0].replies) {
+    //     return data.comments[0].replies.length;
+    //   }
+    //   if (data?.comments[1]) {
+    //     if (data?.comments[1].replies) {
+    //       arr.push(data.comments[1].replies.length + data.comments.length);
+    //     }
+    //   } else {
+    //     // console.log(data.comments[1].replies);
+    //   }
+    // });
+  };
+
+  comments();
+
   // const commentReply = () => {
   //   const commentArr = [];
   // const filts = product.comments.filter((product) => product !== undefined);
@@ -138,69 +170,86 @@ const Display = ({ product }) => {
   const sortByMostComments = () => {
     if (change !== true) {
       product.sort((item1, item2) => {
-        if (item1.comments) {
-          item1 = item1.comments.length;
-        } else if (item1.comments === undefined) {
-          item1 = 0;
-        }
-        if (item2.comments) {
-          item2 = item2.comments.length;
-        } else if (item2.comments === undefined) {
-          item2 = 0;
-        }
+        item1.comments && item1.comments[1] && item1.comments[1].replies
+          ? (item1 = item1.comments.length + item1.comments[1].replies.length)
+          : item1.comments && item1.comments[0].replies
+          ? (item1 = item1.comments.length + item1.comments[0].replies.length)
+          : item1.comments
+          ? (item1 = item1.comments.length)
+          : (item1 = 0);
+
+        item2.comments && item2.comments[1] && item2.comments[1].replies
+          ? (item2 = item2.comments.length + item2.comments[1].replies.length)
+          : item2.comments && item2.comments[0].replies
+          ? (item2 = item2.comments.length + item2.comments[0].replies.length)
+          : item2.comments
+          ? (item2 = item2.comments.length)
+          : (item2 = 0);
         return item2 - item1;
       });
       setUpdateProduct(product);
     } else {
       ulti.sort((item1, item2) => {
-        // let item1 = item1.comments ? item1.comments.length : 0;
+        item1.comments && item1.comments[1] && item1.comments[1].replies
+          ? (item1 = item1.comments.length + item1.comments[1].replies.length)
+          : item1.comments && item1.comments[0].replies
+          ? (item1 = item1.comments.length + item1.comments[0].replies.length)
+          : item1.comments
+          ? (item1 = item1.comments.length)
+          : (item1 = 0);
 
-        if (item1.comments) {
-          item1 = item1.comments.length;
-        } else if (item1.comments === undefined) {
-          item1 = 0;
-        }
-        if (item2.comments) {
-          item2 = item2.comments.length;
-        } else if (item2.comments === undefined) {
-          item2 = 0;
-        }
+        item2.comments && item2.comments[1] && item2.comments[1].replies
+          ? (item2 = item2.comments.length + item2.comments[1].replies.length)
+          : item2.comments && item2.comments[0].replies
+          ? (item2 = item2.comments.length + item2.comments[0].replies.length)
+          : item2.comments
+          ? (item2 = item2.comments.length)
+          : (item2 = 0);
         return item2 - item1;
       });
       setUpdateProduct(product);
     }
+    // let item1 = item1.comments ? item1.comments.length : 0;
   };
 
   const sortByLeastcomments = () => {
     if (change !== true) {
       product.sort((item1, item2) => {
-        if (item1.comments) {
-          item1 = item1.comments.length;
-        } else if (item1.comments === undefined) {
-          item1 = 0;
-        }
-        if (item2.comments) {
-          item2 = item2.comments.length;
-        } else if (item2.comments === undefined) {
-          item2 = 0;
-        }
+        item1.comments && item1.comments[1] && item1.comments[1].replies
+          ? (item1 = item1.comments.length + item1.comments[1].replies.length)
+          : item1.comments && item1.comments[0].replies
+          ? (item1 = item1.comments.length + item1.comments[0].replies.length)
+          : item1.comments
+          ? (item1 = item1.comments.length)
+          : (item1 = 0);
+
+        item2.comments && item2.comments[1] && item2.comments[1].replies
+          ? (item2 = item2.comments.length + item2.comments[1].replies.length)
+          : item2.comments && item2.comments[0].replies
+          ? (item2 = item2.comments.length + item2.comments[0].replies.length)
+          : item2.comments
+          ? (item2 = item2.comments.length)
+          : (item2 = 0);
         return item1 - item2;
       });
       setUpdateProduct(product);
     } else {
       ulti.sort((item1, item2) => {
-        // let item1 = item1.comments ? item1.comments.length : 0;
+        item1.comments && item1.comments[1] && item1.comments[1].replies
+          ? (item1 = item1.comments.length + item1.comments[1].replies.length)
+          : item1.comments && item1.comments[0].replies
+          ? (item1 = item1.comments.length + item1.comments[0].replies.length)
+          : item1.comments
+          ? (item1 = item1.comments.length)
+          : (item1 = 0);
 
-        if (item1.comments) {
-          item1 = item1.comments.length;
-        } else if (item1.comments === undefined) {
-          item1 = 0;
-        }
-        if (item2.comments) {
-          item2 = item2.comments.length;
-        } else if (item2.comments === undefined) {
-          item2 = 0;
-        }
+        item2.comments && item2.comments[1] && item2.comments[1].replies
+          ? (item2 = item2.comments.length + item2.comments[1].replies.length)
+          : item2.comments && item2.comments[0].replies
+          ? (item2 = item2.comments.length + item2.comments[0].replies.length)
+          : item2.comments
+          ? (item2 = item2.comments.length)
+          : (item2 = 0);
         return item1 - item2;
       });
       setUpdateProduct(product);
@@ -254,8 +303,20 @@ const Display = ({ product }) => {
                       <div>
                         <img src={comment} alt="comment icon" />
                       </div>
-                      {data.comments ? (
-                        <p>{data.comments.length} </p>
+                      {data.comments &&
+                      data.comments[1] &&
+                      data.comments[1].replies ? (
+                        <p>
+                          {data.comments.length +
+                            data.comments[1].replies.length}
+                        </p>
+                      ) : data.comments && data.comments[0].replies ? (
+                        <p>
+                          {data.comments.length +
+                            data.comments[0].replies.length}
+                        </p>
+                      ) : data.comments ? (
+                        <p>{data.comments.length}</p>
                       ) : (
                         <p>0</p>
                       )}
@@ -277,8 +338,20 @@ const Display = ({ product }) => {
                     </div>
                     <div className="discussion">
                       <img src={comment} alt="comment icon" />
-                      {data.comments ? (
-                        <p>{data.comments.length} </p>
+                      {data.comments &&
+                      data.comments[1] &&
+                      data.comments[1].replies ? (
+                        <p>
+                          {data.comments.length +
+                            data.comments[1].replies.length}
+                        </p>
+                      ) : data.comments && data.comments[0].replies ? (
+                        <p>
+                          {data.comments.length +
+                            data.comments[0].replies.length}
+                        </p>
+                      ) : data.comments ? (
+                        <p>{data.comments.length}</p>
                       ) : (
                         <p>0</p>
                       )}
