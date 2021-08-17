@@ -1,0 +1,36 @@
+.discussionSection {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.mainCommentSection {
+  background-color: white;
+  margin-top: 40px;
+  @include border-radius;
+  padding: 30px;
+}
+
+.personInfo {
+  display: flex;
+  img {
+    border-radius: 50%;
+    width: 7%;
+  }
+  .handle {
+    margin-left: 40px;
+  }
+  .reply {
+    margin-left: auto;
+  }
+}
+
+.theComments {
+  margin-top: 40px;
+  padding-left: 100px;
+  padding-bottom: 40px;
+  border-bottom: 2px black solid;
+}
+
+.replyContent {
+  margin-top: 20px;
+}

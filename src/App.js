@@ -1,49 +1,23 @@
 import { useEffect, useState } from "react";
-import TopLayer from "./TopLayer";
 import Display from "./Display";
+import Discussion from "./Discussion";
 import axios from "axios";
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  NavLink,
-  Switch,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.scss";
 import Roadmap from "./Roadmap";
 
 function App() {
-  // const [data, setData] = useState();
   const [productRequests, setProductRequests] = useState([]);
 
   useEffect(() => {
     axios
       .get("data.json")
-      .then((res) => setProductRequests(res.data.productRequests))
+      .then((res) => {
+        setProductRequests(res.data.productRequests);
+        console.log(res);
+      })
       .catch((err) => console.log(err));
   }, []);
-
-  // const buttonEnhancement = () => {
-  //   const enhanceArr = [];
-
-  //   productRequests.forEach((data) => {
-  //     if (data?.category === "enhancement") {
-  //       enhanceArr.push(data);
-  //     }
-  //     setProductRequests(enhanceArr);
-  //   });
-  // };
-
-  // const buttonBug = () => {
-  //   const enhanceArr = [];
-
-  //   productRequests.forEach((data) => {
-  //     if (data?.category === "bug") {
-  //       enhanceArr.push(data);
-  //     }
-  //     setProductRequests(enhanceArr);
-  //   });
-  // };
 
   return (
     <div className="App wrapper">
@@ -59,6 +33,7 @@ function App() {
             path="/roadmap"
             render={() => <Roadmap product={productRequests} />}
           />
+          <Route exact path="/discussion/:dataID" component={Discussion} />
         </Switch>
       </Router>
     </div>

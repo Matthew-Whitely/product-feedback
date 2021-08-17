@@ -1,19 +1,12 @@
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import TopLayer from "./TopLayer";
-
 import comment from "./assets/shared/icon-comments.svg";
 import upArrow from "./assets/shared/icon-arrow-up.svg";
 
 const Display = ({ product }) => {
   const [ulti, setUlti] = useState(product);
-
-  //Sort functions
-
-  const [updateProduct, setUpdateProduct] = useState([]);
   const [userSelect, setUserSelect] = useState("placeHolder");
-  const [productLength, setProductLength] = useState(0);
-
   //buttons that display catgegorys
   const [change, setChange] = useState(false);
 
@@ -59,71 +52,6 @@ const Display = ({ product }) => {
     setChange(false);
   };
 
-  //Figuring out how many comments and replies
-
-  const comments = () => {
-    const arr = [];
-    for (let i of product) {
-      console.log(i);
-    }
-
-    // product.forEach((data) => {
-    //   if (data?.comments) {
-    //     arr.push(data);
-    //   } else {
-    //   }
-    // });
-    // arr.forEach((data) => {
-    //   // console.log(data.comments.length);
-    //   if (data?.comments[0].replies) {
-    //     return data.comments[0].replies.length;
-    //   }
-    //   if (data?.comments[1]) {
-    //     if (data?.comments[1].replies) {
-    //       arr.push(data.comments[1].replies.length + data.comments.length);
-    //     }
-    //   } else {
-    //     // console.log(data.comments[1].replies);
-    //   }
-    // });
-  };
-
-  comments();
-
-  // const commentReply = () => {
-  //   const commentArr = [];
-  // const filts = product.comments.filter((product) => product !== undefined);
-  // product.forEach((e) => {
-  //   if (e.comments === undefined) {
-  //     console.log("I FUCKING KNOW");
-  //   } else {
-  //     commentArr.push(e.comments);
-  //   }
-  // });
-
-  // commentArr.forEach((e) => {
-  //what i want to do is check if there is an array called replies within the any of the objects
-
-  // if (e[0]["replies"] === undefined) {
-  //   console.log("ok 0 doesnt have any");
-  // } else if (e[0]["replies"]) {
-  //   console.log(e[0]["replies"]);
-  // }
-  //   if (e[1]["replies"] === undefined) {
-  //     console.log("yup");
-  //   } else if (e[1]["replies"]) {
-  //     console.log(e[1]["replies"]);
-  //   }
-  // });
-
-  // if (product.comments === undefined) {
-  //   console.log("nothing");
-  // } else {
-  //   console.log("hello");
-  // }
-  // };
-  // commentReply();
-
   const sortBy = (e) => {
     setUserSelect(e.target.value);
     if (e.target.value === "MostUpvotes") {
@@ -144,12 +72,10 @@ const Display = ({ product }) => {
       product.sort((item1, item2) => {
         return item2.upvotes - item1.upvotes;
       });
-      setUpdateProduct(product);
     } else {
       ulti.sort((item1, item2) => {
         return item2.upvotes - item1.upvotes;
       });
-      setUpdateProduct(product);
     }
   };
 
@@ -158,12 +84,10 @@ const Display = ({ product }) => {
       product.sort((item1, item2) => {
         return item1.upvotes - item2.upvotes;
       });
-      setUpdateProduct(product);
     } else {
       ulti.sort((item1, item2) => {
         return item1.upvotes - item2.upvotes;
       });
-      setUpdateProduct(product);
     }
   };
 
@@ -187,7 +111,6 @@ const Display = ({ product }) => {
           : (item2 = 0);
         return item2 - item1;
       });
-      setUpdateProduct(product);
     } else {
       ulti.sort((item1, item2) => {
         item1.comments && item1.comments[1] && item1.comments[1].replies
@@ -207,7 +130,6 @@ const Display = ({ product }) => {
           : (item2 = 0);
         return item2 - item1;
       });
-      setUpdateProduct(product);
     }
     // let item1 = item1.comments ? item1.comments.length : 0;
   };
@@ -232,7 +154,6 @@ const Display = ({ product }) => {
           : (item2 = 0);
         return item1 - item2;
       });
-      setUpdateProduct(product);
     } else {
       ulti.sort((item1, item2) => {
         item1.comments && item1.comments[1] && item1.comments[1].replies
@@ -252,7 +173,6 @@ const Display = ({ product }) => {
           : (item2 = 0);
         return item1 - item2;
       });
-      setUpdateProduct(product);
     }
   };
 
@@ -289,7 +209,7 @@ const Display = ({ product }) => {
           {change === true
             ? ulti.map((data) => {
                 return (
-                  <div className="displayInfo">
+                  <div key={data.id} className="displayInfo">
                     <div className="upvote">
                       <img src={upArrow} alt="up arrow icon" />
                       <p>{data.upvotes}</p>
@@ -326,7 +246,7 @@ const Display = ({ product }) => {
               })
             : product.map((data) => {
                 return (
-                  <div className="displayInfo">
+                  <div key={data.id} className="displayInfo">
                     <div className="upvote">
                       <img src={upArrow} alt="up arrow icon" />
                       <p>{data.upvotes}</p>
@@ -336,26 +256,28 @@ const Display = ({ product }) => {
                       <p>{data.description}</p>
                       <button>{data.category}</button>
                     </div>
-                    <div className="discussion">
-                      <img src={comment} alt="comment icon" />
-                      {data.comments &&
-                      data.comments[1] &&
-                      data.comments[1].replies ? (
-                        <p>
-                          {data.comments.length +
-                            data.comments[1].replies.length}
-                        </p>
-                      ) : data.comments && data.comments[0].replies ? (
-                        <p>
-                          {data.comments.length +
-                            data.comments[0].replies.length}
-                        </p>
-                      ) : data.comments ? (
-                        <p>{data.comments.length}</p>
-                      ) : (
-                        <p>0</p>
-                      )}
-                    </div>
+                    <Link to={`/discussion/${data.id}`}>
+                      <div className="discussion">
+                        <img src={comment} alt="comment icon" />
+                        {data.comments &&
+                        data.comments[1] &&
+                        data.comments[1].replies ? (
+                          <p>
+                            {data.comments.length +
+                              data.comments[1].replies.length}
+                          </p>
+                        ) : data.comments && data.comments[0].replies ? (
+                          <p>
+                            {data.comments.length +
+                              data.comments[0].replies.length}
+                          </p>
+                        ) : data.comments ? (
+                          <p>{data.comments.length}</p>
+                        ) : (
+                          <p>0</p>
+                        )}
+                      </div>
+                    </Link>
                   </div>
                 );
               })}
