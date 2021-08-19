@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TopLayer from "./TopLayer";
 import comment from "./assets/shared/icon-comments.svg";
@@ -10,6 +10,17 @@ const Display = ({ product }) => {
   //buttons that display catgegorys
   const [change, setChange] = useState(false);
 
+  const [suggestion, SetSuggestion] = useState(product);
+  //teaxtarea count
+  useEffect(() => {
+    const newArr = [];
+    product.forEach((data) => {
+      if (data?.status == "suggestion") {
+        newArr.push(data);
+      }
+      SetSuggestion(newArr);
+    });
+  }, [product]);
   //comment length
 
   const buttonEnhancement = () => {
@@ -69,7 +80,7 @@ const Display = ({ product }) => {
 
   const sortByMostUpvote = () => {
     if (change !== true) {
-      product.sort((item1, item2) => {
+      suggestion.sort((item1, item2) => {
         return item2.upvotes - item1.upvotes;
       });
     } else {
@@ -81,7 +92,7 @@ const Display = ({ product }) => {
 
   const sortByLeastupvote = () => {
     if (change !== true) {
-      product.sort((item1, item2) => {
+      suggestion.sort((item1, item2) => {
         return item1.upvotes - item2.upvotes;
       });
     } else {
@@ -93,7 +104,7 @@ const Display = ({ product }) => {
 
   const sortByMostComments = () => {
     if (change !== true) {
-      product.sort((item1, item2) => {
+      suggestion.sort((item1, item2) => {
         item1.comments && item1.comments[1] && item1.comments[1].replies
           ? (item1 = item1.comments.length + item1.comments[1].replies.length)
           : item1.comments && item1.comments[0].replies
@@ -136,7 +147,7 @@ const Display = ({ product }) => {
 
   const sortByLeastcomments = () => {
     if (change !== true) {
-      product.sort((item1, item2) => {
+      suggestion.sort((item1, item2) => {
         item1.comments && item1.comments[1] && item1.comments[1].replies
           ? (item1 = item1.comments.length + item1.comments[1].replies.length)
           : item1.comments && item1.comments[0].replies
@@ -192,7 +203,7 @@ const Display = ({ product }) => {
             <p>
               {change
                 ? `${ulti.length} Suggestions`
-                : `${product.length} Suggestions`}
+                : `${suggestion.length} Suggestions`}
             </p>
             <label htmlFor="sort">Sort By:</label>
             <select onChange={sortBy} name="sort" value={userSelect}>
@@ -219,32 +230,34 @@ const Display = ({ product }) => {
                       <p>{data.description}</p>
                       <button>{data.category}</button>
                     </div>
-                    <div className="discussion">
-                      <div>
-                        <img src={comment} alt="comment icon" />
+                    <Link to={`/discussion/${data.id}`}>
+                      <div className="discussion">
+                        <div>
+                          <img src={comment} alt="comment icon" />
+                        </div>
+                        {data.comments &&
+                        data.comments[1] &&
+                        data.comments[1].replies ? (
+                          <p>
+                            {data.comments.length +
+                              data.comments[1].replies.length}
+                          </p>
+                        ) : data.comments && data.comments[0].replies ? (
+                          <p>
+                            {data.comments.length +
+                              data.comments[0].replies.length}
+                          </p>
+                        ) : data.comments ? (
+                          <p>{data.comments.length}</p>
+                        ) : (
+                          <p>0</p>
+                        )}
                       </div>
-                      {data.comments &&
-                      data.comments[1] &&
-                      data.comments[1].replies ? (
-                        <p>
-                          {data.comments.length +
-                            data.comments[1].replies.length}
-                        </p>
-                      ) : data.comments && data.comments[0].replies ? (
-                        <p>
-                          {data.comments.length +
-                            data.comments[0].replies.length}
-                        </p>
-                      ) : data.comments ? (
-                        <p>{data.comments.length}</p>
-                      ) : (
-                        <p>0</p>
-                      )}
-                    </div>
+                    </Link>
                   </div>
                 );
               })
-            : product.map((data) => {
+            : suggestion.map((data) => {
                 return (
                   <div key={data.id} className="displayInfo">
                     <div className="upvote">

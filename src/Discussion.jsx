@@ -1,26 +1,64 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import comment from "./assets/shared/icon-comments.svg";
 import upArrow from "./assets/shared/icon-arrow-up.svg";
+import firebase from "firebase";
 
 const Discussion = (props) => {
   let clickedID = props.match.params.dataID;
+  console.log(clickedID);
+  const [fbData, setFbData] = useState([]);
+  const [value, setValue] = useState("");
+  const [content, setContent] = useState(value.slice(0, 250));
 
-  const [productRequests, setProductRequests] = useState([]);
-  const [clickedProduct, setClickedProduct] = useState([]);
+  const textareaRemainingNumber = useCallback(
+    (text) => {
+      setContent(text.slice(0, 250));
+    },
+    [250, setContent]
+  );
 
   useEffect(() => {
-    axios
-      .get("../data.json")
-      .then((res) => {
-        console.log(res);
-        setProductRequests(res.data.productRequests);
-        console.log("workign?");
-      })
-      .catch((err) => console.log(err));
-  }, [props]);
-  console.log(clickedProduct);
+    // Here we create a variable that holds a reference to our database
+    const dbRef = firebase.database().ref();
+    dbRef.on("value", (response) => {
+      //  Create a new variable to store the new state that we want to introduce to out app
+      const newState = [];
+      // store the response from our database
+      const data = response.val();
+      console.log(data);
+      for (let key in data) {
+        newState.push({
+          key: key,
+          info: data[key],
+        });
+      }
+
+      setFbData(newState[1].info);
+    });
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const submitObj = {
+      id: 3,
+      content: content,
+      user: {
+        image: "/user-images/image-suzanne.jpg",
+        name: "Suzanne Chang",
+        username: "upbeat1811",
+      },
+    };
+    const dbRef1 = firebase
+      .database()
+      .ref()
+      .child(`productRequests/${clickedID - 1}/comments`);
+    dbRef1.push(submitObj, (err) => {
+      if (err) console.log(err);
+    });
+  };
   return (
     <section className="discussionSection">
       <div className="displayTopBanner">
@@ -31,7 +69,8 @@ const Discussion = (props) => {
         </div>
         <button>Add Feedback</button>
       </div>
-      {productRequests.map((data) => {
+
+      {fbData.map((data) => {
         return (
           <div className="disscusionMain">
             {data.id == clickedID ? (
@@ -67,56 +106,75 @@ const Discussion = (props) => {
                     )}
                   </div>
                 </div>
-                {data.comments.map((data) => {
-                  return (
-                    <div className="mainCommentSection">
-                      <div className="personInfo">
-                        {/* <img src={require(`${data.user.image}`)} /> */}
-                        <img src={data.user.image} />
-                        {console.log(data)}
-                        <div className="handle">
-                          <p>{data.user.name}</p>
-                          <p>{data.user.username}</p>
-                        </div>
-                        <div className="reply">
-                          <button>Reply</button>
-                        </div>
-                      </div>
-                      <div className="theComments">
-                        <p>{data.content}</p>
-                        {/* {data.replies.map((e) => {
-                          console.log(e);
-                        })} */}
-                        {data.replies && data.replies.length >= 1
-                          ? data.replies.map((e) => {
-                              return (
-                                <div className="replyContent">
-                                  <div className="personInfo">
-                                    {/* <img src={require(`${data.user.image}`)} /> */}
-                                    <img src={e.user.image} />
-                                    {console.log(data)}
-                                    <div className="handle">
-                                      <p>{e.user.name}</p>
-                                      <p>{e.user.username}</p>
+                {!data.comments
+                  ? console.log("notta")
+                  : data.comments.map((data) => {
+                      return (
+                        <div className="mainCommentSection">
+                          <div className="personInfo">
+                            {/* <img src={require(`${data.user.image}`)} /> */}
+                            <img src={data.user.image} />
+
+                            <div className="handle">
+                              <p>{data.user.name}</p>
+                              <p>{data.user.username}</p>
+                            </div>
+                            <div className="reply">
+                              <button>Reply</button>
+                            </div>
+                          </div>
+                          <div className="theComments">
+                            <p>{data.content}</p>
+
+                            {data.replies && data.replies.length >= 1
+                              ? data.replies.map((e) => {
+                                  return (
+                                    <div className="replyContent">
+                                      <div className="personInfo">
+                                        <img src={e.user.image} />
+
+                                        <div className="handle">
+                                          <p>{e.user.name}</p>
+                                          <p>{e.user.username}</p>
+                                        </div>
+                                        <div className="reply">
+                                          <button>Reply</button>
+                                        </div>
+                                      </div>
+                                      <p>
+                                        <span className="replyingTo">
+                                          @{e.replyingTo}
+                                        </span>
+                                        {e.content}
+                                      </p>
                                     </div>
-                                    <div className="reply">
-                                      <button>Reply</button>
-                                    </div>
-                                  </div>
-                                  <p>{e.content}</p>
-                                </div>
-                              );
-                            })
-                          : console.log("nothing")}
-                      </div>
-                    </div>
-                  );
-                })}
+                                  );
+                                })
+                              : console.log("nothing")}
+                          </div>
+                        </div>
+                      );
+                    })}
               </>
             ) : null}
           </div>
         );
       })}
+      <div className="commentForm">
+        <form onSubmit={handleSubmit}>
+          <h2>Add Comment</h2>
+          <label htmlFor="textarea"></label>
+          <textarea
+            onChange={(event) => textareaRemainingNumber(event.target.value)}
+            value={content}
+            id="textarea"
+          />
+          <div className="bottomForm">
+            <p>{250 - content.length} Characters Left</p>
+            <input type="submit" value="Submit" />
+          </div>
+        </form>
+      </div>
     </section>
   );
 };
