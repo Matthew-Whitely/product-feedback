@@ -7,27 +7,29 @@ import firebase from "firebase";
 
 const Discussion = (props) => {
   let clickedID = props.match.params.dataID;
-  console.log(clickedID);
+
   const [fbData, setFbData] = useState([]);
   const [value, setValue] = useState("");
   const [content, setContent] = useState(value.slice(0, 250));
-
+  const [commentLength, setCommentLength] = useState(0);
   const textareaRemainingNumber = useCallback(
     (text) => {
       setContent(text.slice(0, 250));
     },
     [250, setContent]
   );
-
+  console.log(fbData);
   useEffect(() => {
     // Here we create a variable that holds a reference to our database
     const dbRef = firebase.database().ref();
     dbRef.on("value", (response) => {
       //  Create a new variable to store the new state that we want to introduce to out app
+
       const newState = [];
       // store the response from our database
       const data = response.val();
       console.log(data);
+      // console.log(data);
       for (let key in data) {
         newState.push({
           key: key,
@@ -37,27 +39,38 @@ const Discussion = (props) => {
 
       setFbData(newState[1].info);
     });
-  }, []);
+    console.log(fbData);
+  }, [props]);
+
+  useEffect(() => {
+    fbData.forEach((data) => {
+      if (data.id == clickedID) {
+        setCommentLength(data.comments.length);
+        console.log(data.comments.length);
+        console.log("hi");
+      }
+    });
+  }, [props]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const submitObj = {
+    const entry = {
       id: 3,
       content: content,
       user: {
-        image: "/user-images/image-suzanne.jpg",
-        name: "Suzanne Chang",
-        username: "upbeat1811",
+        image: "/user-images/image-zena.jpg",
+        name: "Zena Kelley",
+        username: "velvetround",
       },
     };
+
     const dbRef1 = firebase
       .database()
       .ref()
-      .child(`productRequests/${clickedID - 1}/comments`);
-    dbRef1.push(submitObj, (err) => {
-      if (err) console.log(err);
-    });
+      .child(`productRequests/${clickedID - 1}/comments/${commentLength}`);
+
+    dbRef1.update(entry);
   };
   return (
     <section className="discussionSection">
@@ -89,6 +102,7 @@ const Discussion = (props) => {
                     <div>
                       <img src={comment} alt="comment icon" />
                     </div>
+                    {/* {console.log(data.comments)} */}
                     {data.comments &&
                     data.comments[1] &&
                     data.comments[1].replies ? (
@@ -105,6 +119,9 @@ const Discussion = (props) => {
                       <p>0</p>
                     )}
                   </div>
+                  {console.log(typeof data.comments)}
+                  {/* {console.table(data.comments)}
+                  {console.dir(data.comments)} */}
                 </div>
                 {!data.comments
                   ? console.log("notta")
@@ -112,7 +129,6 @@ const Discussion = (props) => {
                       return (
                         <div className="mainCommentSection">
                           <div className="personInfo">
-                            {/* <img src={require(`${data.user.image}`)} /> */}
                             <img src={data.user.image} />
 
                             <div className="handle">
